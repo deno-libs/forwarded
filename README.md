@@ -1,6 +1,7 @@
 # forwarded
 
-[![GitHub release (latest by date)][releases]][releases-page] [![][docs-badge]][docs]
+[![GitHub release (latest by date)][releases]][releases-page] [![GitHub Workflow Status][gh-actions-img]][github-actions]
+[![Codecov][codecov-badge]][codecov] [![][docs-badge]][docs]
 
 Deno port of [forwarded](https://github.com/jshttp/forwarded/) library.
 
@@ -32,3 +33,7 @@ Parse the X-Forwarded-For header.
 [docs-badge]: https://img.shields.io/github/v/release/deno-libs/forwarded?color=yellow&label=Documentation&logo=deno&style=flat-square
 [docs]: https://doc.deno.land/https/deno.land/x/forwarded/mod.ts
 [releases-page]: https://github.com/deno-libs/forwarded/releases
+[gh-actions-img]: https://img.shields.io/github/workflow/status/deno-libs/wizard/CI?style=flat-square
+[codecov]: https://codecov.io/gh/deno-libs/wizard
+[github-actions]: https://github.com/deno-libs/wizard/actions
+[codecov-badge]: https://img.shields.io/codecov/c/gh/deno-libs/wizard?style=flat-square
