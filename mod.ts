@@ -1,11 +1,13 @@
 import { ServerRequest } from 'https://deno.land/std@0.88.0/http/server.ts'
 
+type Req = Pick<ServerRequest, 'headers'> & { conn: Pick<ServerRequest['conn'], 'remoteAddr'> }
+
 /**
  * Get all addresses in the request, using the `X-Forwarded-For` header.
  *
  * @param req Request object
  */
-export function forwarded(req: ServerRequest) {
+export function forwarded(req: Req) {
   // simple header parsing
   const proxyAddrs = parse(req.headers.get('x-forwarded-for') ?? '')
   const { hostname: socketAddr } = req.conn.remoteAddr as Deno.NetAddr
