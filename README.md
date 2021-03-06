@@ -8,7 +8,7 @@ Deno port of [forwarded](https://github.com/jshttp/forwarded/) library.
 
 ```ts
 import { serve } from 'https://deno.land/std@0.88.0/http/server.ts'
-import { forwarded, parse } from 'https://deno.land/x/deno-libs/forwarded/mod.ts'
+import { forwarded, parse } from 'https://deno.land/x/forwarded@v0.0.1/mod.ts'
 
 const s = await serve({ port: 3000 })
 
