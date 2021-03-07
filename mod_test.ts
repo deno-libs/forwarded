@@ -1,6 +1,6 @@
 import { ServerRequest } from 'https://deno.land/std@0.88.0/http/server.ts'
 import { forwarded } from './mod.ts'
-import { describe, it, expect } from 'https://deno.land/x/wizard@0.0.4/mod.ts'
+import { describe, it, expect, run } from 'https://deno.land/x/wizard@0.1.0/mod.ts'
 
 const createReq = (
   hostname: string,
@@ -44,3 +44,5 @@ describe('forwarded(req)', () => {
     expect(forwarded(req)).toEqual(['127.0.0.1', '10.0.0.1', '10.0.0.2'])
   })
 })
+
+run()
