@@ -1,4 +1,4 @@
-import { ServerRequest } from 'https://deno.land/std@0.93.0/http/server.ts'
+import { ServerRequest } from 'https://deno.land/std@0.95.0/http/server.ts'
 
 type Req = Pick<ServerRequest, 'headers'> & { conn: Pick<ServerRequest['conn'], 'remoteAddr'> }
 

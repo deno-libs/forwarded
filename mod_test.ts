@@ -1,6 +1,6 @@
-import { ServerRequest } from 'https://deno.land/std@0.88.0/http/server.ts'
+import { ServerRequest } from 'https://deno.land/std@0.95.0/http/server.ts'
 import { forwarded } from './mod.ts'
-import { describe, it, expect, run } from 'https://deno.land/x/wizard@0.1.0/mod.ts'
+import { describe, it, expect, run } from 'https://deno.land/x/wizard@0.1.3/mod.ts'
 
 const createReq = (
   hostname: string,
