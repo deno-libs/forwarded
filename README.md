@@ -28,7 +28,6 @@ Get all addresses in the request, using the `X-Forwarded-For` header.
 
 Parse the X-Forwarded-For header.
 
-[license]: https://github.com/deno-libs/forwarded/blob/master/LICENSE
 [releases]: https://img.shields.io/github/v/release/deno-libs/forwarded?style=flat-square
 [docs-badge]: https://img.shields.io/github/v/release/deno-libs/forwarded?color=yellow&label=Documentation&logo=deno&style=flat-square
 [docs]: https://doc.deno.land/https/deno.land/x/forwarded/mod.ts
