@@ -1,4 +1,4 @@
-import { ServerRequest } from 'https://deno.land/std@0.99.0/http/server.ts'
+import { ServerRequest } from 'https://deno.land/std@0.100.0/http/server.ts'
 import { forwarded } from './mod.ts'
 import { describe, it, expect, run } from 'https://deno.land/x/tincan@0.2.1/mod.ts'
 
