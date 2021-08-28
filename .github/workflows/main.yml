@@ -9,18 +9,19 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - name: Create tests
-        run: deno test --unstable --coverage=coverage
+      - name: Run tests
+        run: deno test -A --coverage=coverage
       - name: Create coverage report
-        run: deno --unstable coverage ./coverage --lcov > coverage.lcov
-      - name: Collect coverage
-        uses: codecov/codecov-action@v1.5.0
+        run: deno coverage ./coverage --lcov > coverage.lcov
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
         with:
-          file: ./coverage.lcov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage.lcov
