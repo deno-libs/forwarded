@@ -1,20 +1,19 @@
-import { ServerRequest } from 'https://deno.land/std@0.106.0/http/server.ts'
+import type { RequestWithConnection } from './mod.ts'
 import { forwarded } from './mod.ts'
-import { describe, it, expect, run } from 'https://deno.land/x/tincan@0.2.1/mod.ts'
+import { ConnInfo } from 'https://deno.land/std@0.107.0/http/server.ts'
+import { describe, it, expect, run } from 'https://deno.land/x/tincan@0.2.2/mod.ts'
 
-const createReq = (
-  hostname: string,
-  headers?: Record<string, string>
-): Pick<ServerRequest, 'headers'> & { conn: Pick<ServerRequest['conn'], 'remoteAddr'> } => ({
-  conn: {
-    remoteAddr: {
-      hostname,
-      port: 8081,
-      transport: 'tcp'
-    }
-  },
-  headers: new Headers(headers || {})
-})
+const createReq = (hostname: string, headers?: Record<string, string>): RequestWithConnection =>
+  ({
+    conn: {
+      remoteAddr: {
+        hostname,
+        port: 8081,
+        transport: 'tcp'
+      }
+    } as ConnInfo,
+    headers: new Headers(headers || {})
+  } as any)
 
 describe('forwarded(req)', () => {
   it('should work with `X-Forwarded-For` header', () => {
