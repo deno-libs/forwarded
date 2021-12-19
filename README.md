@@ -8,12 +8,12 @@ Deno port of [forwarded](https://github.com/jshttp/forwarded/) library.
 ## Usage
 
 ```ts
-import { Server } from 'https://deno.land/std@0.111.0/http/server.ts'
+import { Server } from 'https://deno.land/std@0.118.0/http/server.ts'
 import { forwarded, parse } from 'https://deno.land/x/forwarded/mod.ts'
 
 const s = new Server({
-  addr: ':3000',
-  handler: (req, connInfo) => {
+  port: 8080,
+  handler: (req) => {
     return new Response(JSON.stringify(forwarded(req))
   }
 })
