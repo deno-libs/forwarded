@@ -1,6 +1,6 @@
 import type { RequestWithConnection } from './mod.ts'
 import { forwarded } from './mod.ts'
-import type { ConnInfo } from 'https://deno.land/std@0.181.0/http/server.ts'
+import type { ConnInfo } from 'https://deno.land/std@0.185.0/http/server.ts'
 import { describe, it, expect, run } from 'https://deno.land/x/tincan@1.0.1/mod.ts'
 
 const createReq = (hostname: string, headers?: Record<string, string>): RequestWithConnection =>
