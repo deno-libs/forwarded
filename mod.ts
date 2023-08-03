@@ -1,4 +1,4 @@
-import type { ConnInfo } from 'https://deno.land/std@0.192.0/http/server.ts'
+import type { ConnInfo } from 'https://deno.land/std@0.197.0/http/server.ts'
 
 export type RequestWithConnection = Request & { conn: ConnInfo }
 
