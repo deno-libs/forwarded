@@ -18,7 +18,10 @@ function getAddress(addr: Deno.Addr): string {
  * @param req Request object
  * @param info Deno 2 request connection info (optional)
  */
-export function forwarded(req: RequestWithConnection, info?: ConnectionInfo) {
+export function forwarded(
+  req: RequestWithConnection,
+  info?: ConnectionInfo,
+): string[] {
   // simple header parsing
   const proxyAddrs = parse(req.headers.get('x-forwarded-for') ?? '')
   const remoteAddr = info?.remoteAddr ?? req.connInfo?.remoteAddr ??
@@ -41,8 +44,8 @@ export function forwarded(req: RequestWithConnection, info?: ConnectionInfo) {
  *
  * @param header Header value
  */
-export function parse(header: string) {
-  const list = []
+export function parse(header: string): string[] {
+  const list: string[] = []
   let start = header.length
   let end = header.length
 
