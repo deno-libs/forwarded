@@ -9,7 +9,7 @@ Deno port of [forwarded](https://github.com/jshttp/forwarded/) library.
 ## Usage
 
 ```ts
-import { forwarded } from 'https://deno.land/x/forwarded/mod.ts'
+import { forwarded } from 'jsr:@deno-libs/forwarded'
 
 Deno.serve((req, info) => new Response(JSON.stringify(forwarded(req, info))))
 ```
