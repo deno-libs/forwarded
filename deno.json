@@ -1,6 +1,5 @@
 {
   "name": "@deno-libs/forwarded",
-  "version": "0.1.13",
   "exports": "./mod.ts",
   "fmt": {
     "singleQuote": true,
