@@ -1,47 +1,70 @@
 import type { RequestWithConnection } from './mod.ts'
 import { forwarded } from './mod.ts'
-import type { ConnInfo } from 'https://deno.land/std@0.197.0/http/server.ts'
-import { describe, it, expect, run } from 'https://deno.land/x/tincan@1.0.1/mod.ts'
 
-const createReq = (hostname: string, headers?: Record<string, string>): RequestWithConnection =>
-  ({
-    conn: {
-      remoteAddr: {
-        hostname,
-        port: 8081,
-        transport: 'tcp'
-      }
-    } as ConnInfo,
-    headers: new Headers(headers || {})
-  } as unknown as RequestWithConnection)
+const createReq = (
+  headers?: Record<string, string>,
+): RequestWithConnection => ({
+  headers: new Headers(headers || {}),
+} as unknown as RequestWithConnection)
 
-describe('forwarded(req)', () => {
-  it('should work with `X-Forwarded-For` header', () => {
-    const req = createReq('127.0.0.1')
-
-    expect(forwarded(req)).toEqual(['127.0.0.1'])
-  })
-  it('should include entries from `X-Forwarded-For`', () => {
-    const req = createReq('127.0.0.1', {
-      'x-forwarded-for': '10.0.0.2, 10.0.0.1'
-    })
-
-    expect(forwarded(req)).toEqual(['127.0.0.1', '10.0.0.1', '10.0.0.2'])
-  })
-  it('should skip blank entries', () => {
-    const req = createReq('127.0.0.1', {
-      'x-forwarded-for': '10.0.0.2,, 10.0.0.1'
-    })
-
-    expect(forwarded(req)).toEqual(['127.0.0.1', '10.0.0.1', '10.0.0.2'])
-  })
-  it('should trim leading OWS', () => {
-    const req = createReq('127.0.0.1', {
-      'x-forwarded-for': ' 10.0.0.2 ,  , 10.0.0.1 '
-    })
-
-    expect(forwarded(req)).toEqual(['127.0.0.1', '10.0.0.1', '10.0.0.2'])
-  })
+const createRemoteAddrInfo = (hostname: string) => ({
+  remoteAddr: {
+    hostname,
+    port: 8081,
+    transport: 'tcp',
+  } as Deno.NetAddr,
 })
 
-run()
+const assertArrayEquals = (actual: string[], expected: string[]) => {
+  if (
+    actual.length !== expected.length ||
+    actual.some((value, index) => value !== expected[index])
+  ) {
+    throw new Error(
+      `Assertion failed.\nExpected: ${JSON.stringify(expected)}\nActual: ${
+        JSON.stringify(actual)
+      }`,
+    )
+  }
+}
+
+Deno.test('forwarded(req): should use Deno 2 info.remoteAddr', () => {
+  const req = createReq()
+  const info = createRemoteAddrInfo('127.0.0.1')
+
+  assertArrayEquals(forwarded(req, info), ['127.0.0.1'])
+})
+
+Deno.test('forwarded(req): should include entries from `X-Forwarded-For`', () => {
+  const req = createReq({
+    'x-forwarded-for': '10.0.0.2, 10.0.0.1',
+  })
+  const info = createRemoteAddrInfo('127.0.0.1')
+
+  assertArrayEquals(forwarded(req, info), ['127.0.0.1', '10.0.0.1', '10.0.0.2'])
+})
+
+Deno.test('forwarded(req): should skip blank entries', () => {
+  const req = createReq({
+    'x-forwarded-for': '10.0.0.2,, 10.0.0.1',
+  })
+  const info = createRemoteAddrInfo('127.0.0.1')
+
+  assertArrayEquals(forwarded(req, info), ['127.0.0.1', '10.0.0.1', '10.0.0.2'])
+})
+
+Deno.test('forwarded(req): should trim leading OWS', () => {
+  const req = createReq({
+    'x-forwarded-for': ' 10.0.0.2 ,  , 10.0.0.1 ',
+  })
+  const info = createRemoteAddrInfo('127.0.0.1')
+
+  assertArrayEquals(forwarded(req, info), ['127.0.0.1', '10.0.0.1', '10.0.0.2'])
+})
+
+Deno.test('forwarded(req): should support legacy req.conn.remoteAddr', () => {
+  const req = createReq()
+  req.conn = createRemoteAddrInfo('127.0.0.1')
+
+  assertArrayEquals(forwarded(req), ['127.0.0.1'])
+})

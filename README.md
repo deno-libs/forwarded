@@ -1,6 +1,7 @@
 # forwarded
 
-[![GitHub release (latest by date)][releases]][releases-page] [![GitHub Workflow Status][gh-actions-img]][github-actions]
+[![GitHub release (latest by date)][releases]][releases-page]
+[![GitHub Workflow Status][gh-actions-img]][github-actions]
 [![Codecov][codecov-badge]][codecov] [![][docs-badge]][docs]
 
 Deno port of [forwarded](https://github.com/jshttp/forwarded/) library.
@@ -10,12 +11,12 @@ Deno port of [forwarded](https://github.com/jshttp/forwarded/) library.
 ```ts
 import { forwarded } from 'https://deno.land/x/forwarded/mod.ts'
 
-Deno.serve((req) => new Response(JSON.stringify(forwarded(req)))
+Deno.serve((req, info) => new Response(JSON.stringify(forwarded(req, info))))
 ```
 
 ## API
 
-### `forwarded(req)`
+### `forwarded(req, info?)`
 
 Get all addresses in the request, using the `X-Forwarded-For` header.
 

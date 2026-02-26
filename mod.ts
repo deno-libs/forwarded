@@ -1,16 +1,36 @@
-import type { ConnInfo } from 'https://deno.land/std@0.197.0/http/server.ts'
+export type ConnectionInfo = Pick<Deno.ServeHandlerInfo, 'remoteAddr'>
 
-export type RequestWithConnection = Request & { conn: ConnInfo }
+export type RequestWithConnection = Request & {
+  conn?: Pick<Deno.Conn, 'remoteAddr'>
+  connInfo?: ConnectionInfo
+}
+
+function getAddress(addr: Deno.Addr): string {
+  if ('hostname' in addr) return addr.hostname
+  if ('path' in addr) return addr.path
+
+  return String(addr.cid)
+}
 
 /**
  * Get all addresses in the request, using the `X-Forwarded-For` header.
  *
  * @param req Request object
+ * @param info Deno 2 request connection info (optional)
  */
-export function forwarded(req: RequestWithConnection) {
+export function forwarded(req: RequestWithConnection, info?: ConnectionInfo) {
   // simple header parsing
   const proxyAddrs = parse(req.headers.get('x-forwarded-for') ?? '')
-  const { hostname: socketAddr } = req.conn.remoteAddr as Deno.NetAddr
+  const remoteAddr = info?.remoteAddr ?? req.connInfo?.remoteAddr ??
+    req.conn?.remoteAddr
+
+  if (!remoteAddr) {
+    throw new TypeError(
+      'Unable to determine remote address. Pass Deno.serve `info` as second argument.',
+    )
+  }
+
+  const socketAddr = getAddress(remoteAddr)
 
   // return all addresses
   return [socketAddr].concat(proxyAddrs)
